@@ -77,7 +77,7 @@ abstract class SingleFieldBloc<
     Suggestion,
     State extends FieldBlocState<Value, Suggestion, ExtraData>,
     ExtraData> extends Cubit<State> with FieldBloc {
-  Value _initialValue;
+  Value initialValue;
 
   bool _autoValidate = true;
 
@@ -102,7 +102,7 @@ abstract class SingleFieldBloc<
   StreamSubscription<void>? _revalidateFieldBlocsSubscription;
 
   SingleFieldBloc(
-    this._initialValue,
+    this.initialValue,
     List<Validator<Value>>? validators,
     List<AsyncValidator<Value>>? asyncValidators,
     this._asyncValidatorDebounceTime,
@@ -199,7 +199,7 @@ abstract class SingleFieldBloc<
   /// {@macro form_bloc.field_bloc.update_value}
   void updateInitialValue(Value value) {
     if (_canUpdateValue(value: value, isInitialValue: true)) {
-      _initialValue = value;
+      initialValue = value;
 
       final error = _getError(value);
 
@@ -218,7 +218,7 @@ abstract class SingleFieldBloc<
   /// Set the `value` to `null` of the current state.
   ///
   /// {@macro form_bloc.field_bloc.update_value}
-  void clear() => updateInitialValue(_initialValue);
+  void clear() => updateInitialValue(initialValue);
 
   /// Add a [suggestion] to [selectedSuggestion].
   void selectSuggestion(Suggestion suggestion) {
@@ -444,9 +444,9 @@ abstract class SingleFieldBloc<
     return isValidating;
   }
 
-  /// Returns the error of the [_initialValue].
+  /// Returns the error of the [initialValue].
   Object? get _getInitialStateError =>
-      _getError(_initialValue, isInitialState: true);
+      _getError(initialValue, isInitialState: true);
 
   /// Returns the `isValidating` of the `initialState`.
   bool get _getInitialStateIsValidating {
@@ -538,7 +538,7 @@ abstract class SingleFieldBloc<
     if (_getInitialStateIsValidating) {
       _getAsyncValidatorsError(
         error: _getInitialStateError,
-        value: _initialValue,
+        value: initialValue,
       );
     }
   }
